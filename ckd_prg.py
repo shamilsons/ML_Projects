@@ -170,14 +170,7 @@ sc = StandardScaler()
 X_train = sc.fit_transform(X_train)
 X_test = sc.transform(X_test)
 
-# Fitting SVM to the Training set
-classifier = SVC(C=100, kernel = 'linear', random_state = 5)
-classifier.fit(X_train, y_train)
-
-# Predicting the Test set results
-y_pred = classifier.predict(X_test)
-
-def performance_metrics(y_test, y_pred):
+def performance_metrics(clr, y_test, y_pred):
     # Making the Confusion Matrix
     from sklearn.metrics import confusion_matrix
     
@@ -224,9 +217,24 @@ def performance_metrics(y_test, y_pred):
 
     print ('\n==== PREDICTION ACCURACIES OF ALGORITHMS =====\n')
     print ('Classifier Accuracy :',metrics.accuracy_score(y_test,y_pred),'--- MSE:',metrics.mean_squared_error(y_test,y_pred))
-    print ("Train score :%.2f" %round(classifier.score(X_train, y_train),2))
-    print ("Test  score :%.2f" %round(classifier.score(X_test, y_test),2))
+    print ("Train score :%.2f" %round(clr.score(X_train, y_train),2))
+    print ("Test  score :%.2f" %round(clr.score(X_test, y_test),2))
+    print("Classification report:", metrics.classification_report(y_test,y_pred))
 
-performance_metrics(y_test, y_pred)
 
+# Fitting SVM to the Training set
+svm_clr = SVC(C=1.0, kernel = 'poly', degree=2, random_state=42)
+svm_clr.fit(X_train, y_train)
+
+# Predicting the Test set results
+y_pred = svm_clr.predict(X_test)
+
+performance_metrics(svm_clr, y_test, y_pred)
+
+from sklearn.model_selection import cross_val_score
+
+scores = cross_val_score(svm_clr, X_train, y_train, cv=10)
+print(scores)
+print(scores.mean())
 #model_set = ['KNN', 'NB', 'DT', 'LR', 'ANN', 'SVM', 'RF']
+
