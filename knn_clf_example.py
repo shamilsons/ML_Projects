@@ -84,7 +84,7 @@ x_train, x_test, y_train, y_test=train_test_split(iris.data, iris.target, test_s
 clf_knn = KNeighborsClassifier(n_neighbors=3)
 clf_knn.fit(x_train, y_train)
 
-print ("Train accuracy score : %.2f" %round(clf_knn.score(x_train, y_train)*100,2))
+print ("Train accuracy score : %.2f"%round(clf_knn.score(x_train, y_train)*100,2))
 
 #calculate the prediction accuracy metric on test dataset
 print("Test accuracy score : %.2f\n"%round(accuracy_score(y_test, clf_knn.predict(x_test))*100,2))
@@ -104,7 +104,8 @@ for x in range(1, x_train.shape[0]):
 #converting normal python array to numpy array
 accuracy_values=np.array(accuracy_values)
 
-plt.plot(accuracy_values[:,0], accuracy_values[:,1])
+plt.plot(accuracy_values[:,0], accuracy_values[:,1], marker='o', markerfacecolor='blue', markersize=5)
 plt.xlabel("Number of K-Neighbours")
-plt.ylabel("Testing Accuracy")
+plt.ylabel("Accuracy score")
+plt.title("Model selection based on number of neighbours")
 plt.show()
